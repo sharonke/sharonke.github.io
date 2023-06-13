@@ -159,7 +159,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/06/13/backup/" class="post-title-link" itemprop="url">未命名</a>
+          <a href="/2023/06/13/backup/" class="post-title-link" itemprop="url">clonezilla</a>
         </h2>
 
         <div class="post-meta-container">
@@ -169,8 +169,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2023-06-13 13:49:08" itemprop="dateCreated datePublished" datetime="2023-06-13T13:49:08+08:00">2023-06-13</time>
+      <time title="创建时间：2023-06-13 13:51:38 / 修改时间：13:51:49" itemprop="dateCreated datePublished" datetime="2023-06-13T13:51:38+08:00">2023-06-13</time>
     </span>
 
   
@@ -183,7 +184,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><img src="/images/clonezilla.jpg" alt="clonezilla.jpg"><br><br />由于可能存在的误操作会导致系统无法正常使用，我们可以使用<strong>CloneZilla（再生龙）</strong>对硬盘系统进行备份和恢复。</p>
+          <hr>
+<p><img src="/images/clonezilla.jpg" alt="clonezilla.jpg"><br><br />由于可能存在的误操作会导致系统无法正常使用，我们可以使用<strong>CloneZilla（再生龙）</strong>对硬盘系统进行备份和恢复。</p>
 <h2 id="Clonezilla简介"><a href="#Clonezilla简介" class="headerlink" title="Clonezilla简介"></a>Clonezilla简介</h2><p>Clonezilla 是一个很好的 <a target="_blank" rel="noopener" href="http://baike.baidu.com/view/862350.htm">系统克隆</a> 工具，它可以说是吸取了 Norton Ghost 和 Partition Image 的优点。即不仅支持对整个系统进行克隆，而且也可以克隆单个的分区，这种灵活性可能更能适应备份者的需要。<br />Clonezilla是一个用于Linux，Free-Net-OpenBSD，Mac OS X，Windows以及Minix的分区和磁盘克隆程序。它支持所有主要的文件系统，包括EXT，NTFS，FAT，XFS，JFS和Btrfs，LVM2，以及VMWare的企业集群文件系统VMFS3和VMFS5。Clonezilla支持32位和64位系统，同时支持旧版BIOS和UEFI BIOS，并且同时支持MBR和GPT分区表。它是一个用于完整备份Windows系统和所有安装于上的应用软件的好工具，而我喜欢用它来为Linux测试系统做备份，以便我可以在其上做疯狂的实验搞坏后，可以快速恢复它们。<br />Clonezilla也可以使用dd命令来备份不支持的文件系统，该命令可以复制块而非文件，因而不必在意文件系统。简单点说，就是Clonezilla可以复制任何东西。（关于块的快速说明：磁盘扇区是磁盘上最小的可编址存储单元，而块是由单个或者多个扇区组成的逻辑数据结构。）<br />Clonezilla分为两个版本：Clonezilla Live和Clonezilla Server Edition（SE）。Clonezilla Live对于将单个计算机克隆到本地存储设备或者网络共享来说是一流的。而Clonezilla SE则适合更大的部署，用于一次性快速多点克隆整个网络中的PC。Clonezilla SE是一个神奇的软件，我们将在今后讨论。今天，我们将创建一个Clonezilla Live USB存储棒，克隆某个系统，然后恢复它。</p>
 <h2 id="1-备份硬盘系统至本地硬盘"><a href="#1-备份硬盘系统至本地硬盘" class="headerlink" title="1.备份硬盘系统至本地硬盘"></a>1.备份硬盘系统至本地硬盘</h2><p>a. 在需要还原的机器上，使用再生龙U盘启动。<br /><br><img src="/images/1.png" alt="image.png"><br><br />b.选择第一项other modes o Clonezilla live<br /><br><img src="/images/2.png" alt="image.png"><br><br />c.选择中文显示<br /><br><img src="/images/3.png" alt="image.png"><br><br />d.处理键盘映射的策略，选择“不修改键盘映射”。<br /><br><img src="/images/4.png" alt="image.png"><br><br />e.选定模式菜单，选择“使用再生龙”。<br /><br><img src="/images/5.png" alt="image.png"><br><br />f.选定备份&#x2F;恢复的模式，选择“device-image 硬盘&#x2F;分区[存到&#x2F;来自]镜像文件”。<br /><br><img src="/images/6.png" alt="image.png"><br><br />g.这里选择第一项使用本机分区来储存镜像<br /><br><img src="/images/7.png" alt="image.png">)<br><br />h.选择使用数据盘sdb挂载到系统来储存镜像（一般sda为系统盘，sdb为数据盘）<br /><br><img src="/images/8.png" alt="image.png"><br><br />i.选择默认&#x2F; 本地设备中的顶级目录，然后按enter继续<br /><br><img src="/images/9.png" alt="image.png"><br><br />j.选择默认的初学模式<br /><br><img src="/images/10.png" alt="image.png"><br><br />K.选择储存本机硬盘为镜像文件<br /><br><img src="/images/11.png" alt="image.png"><br><br />l.输入镜像文件名称<br /><br><img src="/images/12.png" alt="image.png"><br><br />m.选择要备份的系统盘（sda）<br /><br><img src="/images/13.png" alt="image.png"><br><br />n.选择是否检查或修复源系统，这边默认选第一项，如果系统储存或恢复失败，选第二项检查修复源系统<br /><br><img src="/images/14.png" alt="image.png"><br><br />o.选择默认设置即可<br /><br><img src="/images/15.png" alt="image.png"><br><br />p. 按Enter键继续操作<br /><br><a href="/images/16.png">image.png</a><br><br />q.系统开始备份储存镜像<br /><br><img src="/imgaes/17.png" alt="image.png"><br><br />r.镜像备份完成，按enter键继续<br /><br><img src="/images/18.png" alt="image.png"></p>
 <p><strong>S.关机或重启机器即可</strong><br />无特殊说明按默认选择即可，再生龙系统版本不同，操作界面可能会稍有不同</p>
