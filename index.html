@@ -114,7 +114,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -132,6 +132,88 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/19/rocketchat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Shaun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柠檬小站">
+      <meta itemprop="description" content="备份记录文档">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 柠檬小站">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/06/19/rocketchat/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-19 09:48:24" itemprop="dateCreated datePublished" datetime="2023-06-19T09:48:24+08:00">2023-06-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="运行容器"><a href="#运行容器" class="headerlink" title="运行容器"></a>运行容器</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --name db -d mongo:4.0 --smallfiles --replSet rs0 --oplogSize 128</span><br><span class="line">sudo docker <span class="built_in">exec</span> -ti db mongo --<span class="built_in">eval</span> <span class="string">&quot;printjson(rs.initiate())&quot;</span></span><br><span class="line">sudo docker run --name rocketchat -p 80:3000 --<span class="built_in">link</span> db --<span class="built_in">env</span> ROOT_URL=http://0.0.0.0 --<span class="built_in">env</span> MONGO_OPLOG_URL=mongodb://db:27017/local -d rocket.chat</span><br></pre></td></tr></table></figure>
+<p>:::info<br>第三行的 80 可以改成别的端口，如果你访问是不想在网站后加上端口号，就保持默认的 80 端口<br />第三行 0.0.0.0 改成你服务器的公网 IP 或域名（如果在公网使用的话）或者改成你的内网 IP（如果你内网使用的话）<br>:::</p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>打开浏览器输入 <a href="http://IP地址:端口号">http://IP地址:端口号</a> 或 http:&#x2F;&#x2F;域名:端口号 即可根据向导设置</p>
+<h3 id="给RocketChat开启HTTPS-x2F-SSL支持手机App访问"><a href="#给RocketChat开启HTTPS-x2F-SSL支持手机App访问" class="headerlink" title="给RocketChat开启HTTPS&#x2F;SSL支持手机App访问"></a>给RocketChat开启HTTPS&#x2F;SSL支持手机App访问</h3><p>在一台有公网访问的服务器上安装了RocketChat server，通过网页App和客户端访问都没有问题，但是通过苹果手机RocketChat App，却提示SSL错误无法连接。原因是RokcetChat手机App只能通过HTTPS方式访问RocketChat server。</p>
+<h3 id="生成SSL证书"><a href="#生成SSL证书" class="headerlink" title="生成SSL证书"></a>生成SSL证书</h3><h3 id="生成自签名SSL证书，请参见："><a href="#生成自签名SSL证书，请参见：" class="headerlink" title="生成自签名SSL证书，请参见："></a>生成自签名SSL证书，请参见：</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/cookcodeblog/OneDayDevOps/blob/master/components/ssl/create_self_signed_cert.sh">https://github.com/cookcodeblog/OneDayDevOps/blob/master/components/ssl/create_self_signed_cert.sh</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/nklinsirui/article/details/89432430">使用OpenSSL生成自签名SSL证书</a><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./create_self_signed_cert.sh <span class="string">&quot;/C=CN/ST=Guangdong/L=Guangzhou/O=xdevops/OU=xdevops/CN=&lt;rocketchat_ip&gt;&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="为Nginx配置SSL证书"><a href="#为Nginx配置SSL证书" class="headerlink" title="为Nginx配置SSL证书"></a>为Nginx配置SSL证书</h3><p>复制上面生成的秘钥和 CA证书到Nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> server.key /etc/nginx/certificate.key</span><br><span class="line"><span class="built_in">cp</span> server.crt /etc/nginx/certificate.crt</span><br></pre></td></tr></table></figure>
+<h3 id="配置Nginx-HTTPS反向代理"><a href="#配置Nginx-HTTPS反向代理" class="headerlink" title="配置Nginx HTTPS反向代理"></a>配置Nginx HTTPS反向代理</h3><p>编辑nginx.conf文件，配置HTTPS反向代理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># HTTPS Server</span></span><br><span class="line">    server &#123;</span><br><span class="line">        listen 443 ssl;</span><br><span class="line">        server_name &lt;rocketchat_ip&gt;;</span><br><span class="line"></span><br><span class="line">        error_log /var/log/nginx/rocketchat_error.log;</span><br><span class="line"></span><br><span class="line">        ssl_certificate /etc/nginx/certificate.crt;</span><br><span class="line">        ssl_certificate_key /etc/nginx/certificate.key;</span><br><span class="line">        ssl_dhparam /etc/nginx/dhparams.pem;</span><br><span class="line">        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">        ssl_ciphers <span class="string">&#x27;ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA&#x27;</span>;</span><br><span class="line">        ssl_prefer_server_ciphers on;</span><br><span class="line">        ssl_session_cache shared:SSL:20m;</span><br><span class="line">        ssl_session_timeout 180m;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            proxy_pass http://&lt;rocketchat_ip&gt;:&lt;rocketchat_port&gt;/;</span><br><span class="line">            proxy_http_version 1.1;</span><br><span class="line">            proxy_set_header Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">            proxy_set_header Connection <span class="string">&quot;upgrade&quot;</span>;</span><br><span class="line">            proxy_set_header Host <span class="variable">$http_host</span>;</span><br><span class="line">            proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">            proxy_set_header X-Forward-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">            proxy_set_header X-Forward-Proto http;</span><br><span class="line">            proxy_set_header X-Nginx-Proxy <span class="literal">true</span>;</span><br><span class="line">            proxy_redirect off;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>检查Nginx配置文件并让修改后的配置文件生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nginx -t</span><br><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
